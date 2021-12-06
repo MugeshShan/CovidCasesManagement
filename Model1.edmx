@@ -10,39 +10,41 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Patient_Id" Type="int" Nullable="false" />
-          <Property Name="Patient_Name" Type="int" Nullable="false" />
-          <Property Name="Recovery_Status" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Covid_Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Hospital_Id" Type="int" Nullable="false" />
+          <Property Name="Male_Confirmed_Cases" Type="int" Nullable="false" />
+          <Property Name="Female_Confirmed_Cases" Type="int" Nullable="false" />
+          <Property Name="Children_Confirmed_Cases" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
         </EntityType>
         <EntityType Name="Confirmed_Deaths">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Patient_Id" Type="int" Nullable="false" />
-          <Property Name="DeathFactor" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Hospital_Id" Type="int" Nullable="false" />
+          <Property Name="Male_Deaths" Type="int" Nullable="false" />
+          <Property Name="Female_Deaths" Type="int" Nullable="false" />
+          <Property Name="Children_Deaths" Type="int" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
-          <Property Name="Time" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="Confirmed_Recoveries">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Patient_Id" Type="int" Nullable="false" />
-          <Property Name="Recover_Status" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Recovery_Date" Type="datetime" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Hospital_Id" Type="int" Nullable="false" />
+          <Property Name="Male_Confirmed_Recoveries" Type="int" Nullable="false" />
+          <Property Name="Female_Confirmed_Recoveries" Type="int" Nullable="false" />
+          <Property Name="Children_Confirmed_Recoveries" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
         </EntityType>
-        <EntityType Name="Hospitalized_Details">
+        <EntityType Name="Hospital_Details">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Patient_Id" Type="int" Nullable="false" />
-          <Property Name="Ward_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Ward_Number" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Bed_Id" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Hospital_Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Login">
           <Key>
@@ -52,86 +54,62 @@
           <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="Patient_Details">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Age" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Gender" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Test_Id" Type="int" Nullable="false" />
-          <Property Name="Joining_Date" Type="datetime" Nullable="false" />
-          <Property Name="Discharge_Date" Type="datetime" />
-        </EntityType>
         <EntityType Name="Tested_Individuals">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Patient_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Sample_Taken" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Test_Status" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Test_Results" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Hospital_Id" Type="int" Nullable="false" />
+          <Property Name="Male_Sample_Taken" Type="int" Nullable="false" />
+          <Property Name="Female_Sample_Taken" Type="int" Nullable="false" />
+          <Property Name="Children_Sample_Taken" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
         </EntityType>
         <Association Name="FK_Confirmed_Deaths_ToTable">
-          <End Role="Patient_Details" Type="Self.Patient_Details" Multiplicity="1" />
+          <End Role="Hospital_Details" Type="Self.Hospital_Details" Multiplicity="1" />
           <End Role="Confirmed_Deaths" Type="Self.Confirmed_Deaths" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Patient_Details">
+            <Principal Role="Hospital_Details">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Confirmed_Deaths">
-              <PropertyRef Name="Patient_Id" />
+              <PropertyRef Name="Hospital_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Covid_Cases_ToTable">
-          <End Role="Patient_Details" Type="Self.Patient_Details" Multiplicity="1" />
+          <End Role="Hospital_Details" Type="Self.Hospital_Details" Multiplicity="1" />
           <End Role="Confirmed_Cases" Type="Self.Confirmed_Cases" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Patient_Details">
+            <Principal Role="Hospital_Details">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Confirmed_Cases">
-              <PropertyRef Name="Patient_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Hospitalized_Details_ToTable">
-          <End Role="Patient_Details" Type="Self.Patient_Details" Multiplicity="1" />
-          <End Role="Hospitalized_Details" Type="Self.Hospitalized_Details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patient_Details">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Hospitalized_Details">
-              <PropertyRef Name="Patient_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Patient_Details_ToTable">
-          <End Role="Tested_Individuals" Type="Self.Tested_Individuals" Multiplicity="1" />
-          <End Role="Patient_Details" Type="Self.Patient_Details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tested_Individuals">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Patient_Details">
-              <PropertyRef Name="Test_Id" />
+              <PropertyRef Name="Hospital_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Table_ToTable">
-          <End Role="Patient_Details" Type="Self.Patient_Details" Multiplicity="1" />
+          <End Role="Hospital_Details" Type="Self.Hospital_Details" Multiplicity="1" />
           <End Role="Confirmed_Recoveries" Type="Self.Confirmed_Recoveries" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Patient_Details">
+            <Principal Role="Hospital_Details">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Confirmed_Recoveries">
-              <PropertyRef Name="Patient_Id" />
+              <PropertyRef Name="Hospital_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tested_Individuals_ToTable">
+          <End Role="Hospital_Details" Type="Self.Hospital_Details" Multiplicity="1" />
+          <End Role="Tested_Individuals" Type="Self.Tested_Individuals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hospital_Details">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tested_Individuals">
+              <PropertyRef Name="Hospital_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -139,29 +117,24 @@
           <EntitySet Name="Confirmed_Cases" EntityType="Self.Confirmed_Cases" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Confirmed_Deaths" EntityType="Self.Confirmed_Deaths" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Confirmed_Recoveries" EntityType="Self.Confirmed_Recoveries" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Hospitalized_Details" EntityType="Self.Hospitalized_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hospital_Details" EntityType="Self.Hospital_Details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Patient_Details" EntityType="Self.Patient_Details" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tested_Individuals" EntityType="Self.Tested_Individuals" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Confirmed_Deaths_ToTable" Association="Self.FK_Confirmed_Deaths_ToTable">
-            <End Role="Patient_Details" EntitySet="Patient_Details" />
+            <End Role="Hospital_Details" EntitySet="Hospital_Details" />
             <End Role="Confirmed_Deaths" EntitySet="Confirmed_Deaths" />
           </AssociationSet>
           <AssociationSet Name="FK_Covid_Cases_ToTable" Association="Self.FK_Covid_Cases_ToTable">
-            <End Role="Patient_Details" EntitySet="Patient_Details" />
+            <End Role="Hospital_Details" EntitySet="Hospital_Details" />
             <End Role="Confirmed_Cases" EntitySet="Confirmed_Cases" />
           </AssociationSet>
-          <AssociationSet Name="FK_Hospitalized_Details_ToTable" Association="Self.FK_Hospitalized_Details_ToTable">
-            <End Role="Patient_Details" EntitySet="Patient_Details" />
-            <End Role="Hospitalized_Details" EntitySet="Hospitalized_Details" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Patient_Details_ToTable" Association="Self.FK_Patient_Details_ToTable">
-            <End Role="Tested_Individuals" EntitySet="Tested_Individuals" />
-            <End Role="Patient_Details" EntitySet="Patient_Details" />
-          </AssociationSet>
           <AssociationSet Name="FK_Table_ToTable" Association="Self.FK_Table_ToTable">
-            <End Role="Patient_Details" EntitySet="Patient_Details" />
+            <End Role="Hospital_Details" EntitySet="Hospital_Details" />
             <End Role="Confirmed_Recoveries" EntitySet="Confirmed_Recoveries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tested_Individuals_ToTable" Association="Self.FK_Tested_Individuals_ToTable">
+            <End Role="Hospital_Details" EntitySet="Hospital_Details" />
+            <End Role="Tested_Individuals" EntitySet="Tested_Individuals" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -173,43 +146,48 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Patient_Id" Type="Int32" Nullable="false" />
-          <Property Name="Patient_Name" Type="Int32" Nullable="false" />
-          <Property Name="Recovery_Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Covid_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Patient_Details" Relationship="Self.FK_Covid_Cases_ToTable" FromRole="Confirmed_Cases" ToRole="Patient_Details" />
+          <Property Name="Hospital_Id" Type="Int32" Nullable="false" />
+          <Property Name="Male_Confirmed_Cases" Type="Int32" Nullable="false" />
+          <Property Name="Female_Confirmed_Cases" Type="Int32" Nullable="false" />
+          <Property Name="Children_Confirmed_Cases" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Hospital_Details" Relationship="Self.FK_Covid_Cases_ToTable" FromRole="Confirmed_Cases" ToRole="Hospital_Details" />
         </EntityType>
         <EntityType Name="Confirmed_Deaths">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Patient_Id" Type="Int32" Nullable="false" />
-          <Property Name="DeathFactor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Hospital_Id" Type="Int32" Nullable="false" />
+          <Property Name="Male_Deaths" Type="Int32" Nullable="false" />
+          <Property Name="Female_Deaths" Type="Int32" Nullable="false" />
+          <Property Name="Children_Deaths" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Time" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <NavigationProperty Name="Patient_Details" Relationship="Self.FK_Confirmed_Deaths_ToTable" FromRole="Confirmed_Deaths" ToRole="Patient_Details" />
+          <NavigationProperty Name="Hospital_Details" Relationship="Self.FK_Confirmed_Deaths_ToTable" FromRole="Confirmed_Deaths" ToRole="Hospital_Details" />
         </EntityType>
         <EntityType Name="Confirmed_Recoveries">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Patient_Id" Type="Int32" Nullable="false" />
-          <Property Name="Recover_Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Patient_Details" Relationship="Self.FK_Table_ToTable" FromRole="Confirmed_Recoveries" ToRole="Patient_Details" />
-          <Property Name="Recovery_Date" Type="DateTime" Precision="3" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Hospital_Id" Type="Int32" Nullable="false" />
+          <Property Name="Male_Confirmed_Recoveries" Type="Int32" Nullable="false" />
+          <Property Name="Female_Confirmed_Recoveries" Type="Int32" Nullable="false" />
+          <Property Name="Children_Confirmed_Recoveries" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Hospital_Details" Relationship="Self.FK_Table_ToTable" FromRole="Confirmed_Recoveries" ToRole="Hospital_Details" />
         </EntityType>
-        <EntityType Name="Hospitalized_Details">
+        <EntityType Name="Hospital_Details">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Patient_Id" Type="Int32" Nullable="false" />
-          <Property Name="Ward_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Ward_Number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Bed_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Patient_Details" Relationship="Self.FK_Hospitalized_Details_ToTable" FromRole="Hospitalized_Details" ToRole="Patient_Details" />
+          <Property Name="Hospital_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Confirmed_Cases" Relationship="Self.FK_Covid_Cases_ToTable" FromRole="Hospital_Details" ToRole="Confirmed_Cases" />
+          <NavigationProperty Name="Confirmed_Deaths" Relationship="Self.FK_Confirmed_Deaths_ToTable" FromRole="Hospital_Details" ToRole="Confirmed_Deaths" />
+          <NavigationProperty Name="Confirmed_Recoveries" Relationship="Self.FK_Table_ToTable" FromRole="Hospital_Details" ToRole="Confirmed_Recoveries" />
+          <NavigationProperty Name="Tested_Individuals" Relationship="Self.FK_Tested_Individuals_ToTable" FromRole="Hospital_Details" ToRole="Tested_Individuals" />
         </EntityType>
         <EntityType Name="Login">
           <Key>
@@ -219,92 +197,63 @@
           <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
-        <EntityType Name="Patient_Details">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Age" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Test_Id" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Confirmed_Cases" Relationship="Self.FK_Covid_Cases_ToTable" FromRole="Patient_Details" ToRole="Confirmed_Cases" />
-          <NavigationProperty Name="Confirmed_Deaths" Relationship="Self.FK_Confirmed_Deaths_ToTable" FromRole="Patient_Details" ToRole="Confirmed_Deaths" />
-          <NavigationProperty Name="Confirmed_Recoveries" Relationship="Self.FK_Table_ToTable" FromRole="Patient_Details" ToRole="Confirmed_Recoveries" />
-          <NavigationProperty Name="Hospitalized_Details" Relationship="Self.FK_Hospitalized_Details_ToTable" FromRole="Patient_Details" ToRole="Hospitalized_Details" />
-          <NavigationProperty Name="Tested_Individuals" Relationship="Self.FK_Patient_Details_ToTable" FromRole="Patient_Details" ToRole="Tested_Individuals" />
-          <Property Name="Joining_Date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Discharge_Date" Type="DateTime" Precision="3" />
-          <Property Name="Gender" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="Tested_Individuals">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Patient_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Sample_Taken" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Test_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Test_Results" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Patient_Details" Relationship="Self.FK_Patient_Details_ToTable" FromRole="Tested_Individuals" ToRole="Patient_Details" />
+          <Property Name="Hospital_Id" Type="Int32" Nullable="false" />
+          <Property Name="Male_Sample_Taken" Type="Int32" Nullable="false" />
+          <Property Name="Female_Sample_Taken" Type="Int32" Nullable="false" />
+          <Property Name="Children_Sample_Taken" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Hospital_Details" Relationship="Self.FK_Tested_Individuals_ToTable" FromRole="Tested_Individuals" ToRole="Hospital_Details" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
         </EntityType>
         <Association Name="FK_Covid_Cases_ToTable">
-          <End Role="Patient_Details" Type="Self.Patient_Details" Multiplicity="1" />
+          <End Role="Hospital_Details" Type="Self.Hospital_Details" Multiplicity="1" />
           <End Role="Confirmed_Cases" Type="Self.Confirmed_Cases" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Patient_Details">
+            <Principal Role="Hospital_Details">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Confirmed_Cases">
-              <PropertyRef Name="Patient_Id" />
+              <PropertyRef Name="Hospital_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Confirmed_Deaths_ToTable">
-          <End Role="Patient_Details" Type="Self.Patient_Details" Multiplicity="1" />
+          <End Role="Hospital_Details" Type="Self.Hospital_Details" Multiplicity="1" />
           <End Role="Confirmed_Deaths" Type="Self.Confirmed_Deaths" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Patient_Details">
+            <Principal Role="Hospital_Details">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Confirmed_Deaths">
-              <PropertyRef Name="Patient_Id" />
+              <PropertyRef Name="Hospital_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Table_ToTable">
-          <End Role="Patient_Details" Type="Self.Patient_Details" Multiplicity="1" />
+          <End Role="Hospital_Details" Type="Self.Hospital_Details" Multiplicity="1" />
           <End Role="Confirmed_Recoveries" Type="Self.Confirmed_Recoveries" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Patient_Details">
+            <Principal Role="Hospital_Details">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Confirmed_Recoveries">
-              <PropertyRef Name="Patient_Id" />
+              <PropertyRef Name="Hospital_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Hospitalized_Details_ToTable">
-          <End Role="Patient_Details" Type="Self.Patient_Details" Multiplicity="1" />
-          <End Role="Hospitalized_Details" Type="Self.Hospitalized_Details" Multiplicity="*" />
+        <Association Name="FK_Tested_Individuals_ToTable">
+          <End Role="Hospital_Details" Type="Self.Hospital_Details" Multiplicity="1" />
+          <End Role="Tested_Individuals" Type="Self.Tested_Individuals" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Patient_Details">
+            <Principal Role="Hospital_Details">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Hospitalized_Details">
-              <PropertyRef Name="Patient_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Patient_Details_ToTable">
-          <End Role="Tested_Individuals" Type="Self.Tested_Individuals" Multiplicity="1" />
-          <End Role="Patient_Details" Type="Self.Patient_Details" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tested_Individuals">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Patient_Details">
-              <PropertyRef Name="Test_Id" />
+            <Dependent Role="Tested_Individuals">
+              <PropertyRef Name="Hospital_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -312,29 +261,24 @@
           <EntitySet Name="Confirmed_Cases" EntityType="Self.Confirmed_Cases" />
           <EntitySet Name="Confirmed_Deaths" EntityType="Self.Confirmed_Deaths" />
           <EntitySet Name="Confirmed_Recoveries" EntityType="Self.Confirmed_Recoveries" />
-          <EntitySet Name="Hospitalized_Details" EntityType="Self.Hospitalized_Details" />
+          <EntitySet Name="Hospital_Details" EntityType="Self.Hospital_Details" />
           <EntitySet Name="Logins" EntityType="Self.Login" />
-          <EntitySet Name="Patient_Details" EntityType="Self.Patient_Details" />
           <EntitySet Name="Tested_Individuals" EntityType="Self.Tested_Individuals" />
           <AssociationSet Name="FK_Covid_Cases_ToTable" Association="Self.FK_Covid_Cases_ToTable">
-            <End Role="Patient_Details" EntitySet="Patient_Details" />
+            <End Role="Hospital_Details" EntitySet="Hospital_Details" />
             <End Role="Confirmed_Cases" EntitySet="Confirmed_Cases" />
           </AssociationSet>
           <AssociationSet Name="FK_Confirmed_Deaths_ToTable" Association="Self.FK_Confirmed_Deaths_ToTable">
-            <End Role="Patient_Details" EntitySet="Patient_Details" />
+            <End Role="Hospital_Details" EntitySet="Hospital_Details" />
             <End Role="Confirmed_Deaths" EntitySet="Confirmed_Deaths" />
           </AssociationSet>
           <AssociationSet Name="FK_Table_ToTable" Association="Self.FK_Table_ToTable">
-            <End Role="Patient_Details" EntitySet="Patient_Details" />
+            <End Role="Hospital_Details" EntitySet="Hospital_Details" />
             <End Role="Confirmed_Recoveries" EntitySet="Confirmed_Recoveries" />
           </AssociationSet>
-          <AssociationSet Name="FK_Hospitalized_Details_ToTable" Association="Self.FK_Hospitalized_Details_ToTable">
-            <End Role="Patient_Details" EntitySet="Patient_Details" />
-            <End Role="Hospitalized_Details" EntitySet="Hospitalized_Details" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Patient_Details_ToTable" Association="Self.FK_Patient_Details_ToTable">
+          <AssociationSet Name="FK_Tested_Individuals_ToTable" Association="Self.FK_Tested_Individuals_ToTable">
+            <End Role="Hospital_Details" EntitySet="Hospital_Details" />
             <End Role="Tested_Individuals" EntitySet="Tested_Individuals" />
-            <End Role="Patient_Details" EntitySet="Patient_Details" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -347,10 +291,11 @@
             <EntityTypeMapping TypeName="CovidCasesDBModel.Confirmed_Cases">
               <MappingFragment StoreEntitySet="Confirmed_Cases">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
-                <ScalarProperty Name="Patient_Name" ColumnName="Patient_Name" />
-                <ScalarProperty Name="Recovery_Status" ColumnName="Recovery_Status" />
-                <ScalarProperty Name="Covid_Status" ColumnName="Covid_Status" />
+                <ScalarProperty Name="Hospital_Id" ColumnName="Hospital_Id" />
+                <ScalarProperty Name="Male_Confirmed_Cases" ColumnName="Male_Confirmed_Cases" />
+                <ScalarProperty Name="Female_Confirmed_Cases" ColumnName="Female_Confirmed_Cases" />
+                <ScalarProperty Name="Children_Confirmed_Cases" ColumnName="Children_Confirmed_Cases" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -358,31 +303,32 @@
             <EntityTypeMapping TypeName="CovidCasesDBModel.Confirmed_Deaths">
               <MappingFragment StoreEntitySet="Confirmed_Deaths">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
-                <ScalarProperty Name="DeathFactor" ColumnName="DeathFactor" />
+                <ScalarProperty Name="Hospital_Id" ColumnName="Hospital_Id" />
+                <ScalarProperty Name="Male_Deaths" ColumnName="Male_Deaths" />
+                <ScalarProperty Name="Female_Deaths" ColumnName="Female_Deaths" />
+                <ScalarProperty Name="Children_Deaths" ColumnName="Children_Deaths" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Confirmed_Recoveries">
             <EntityTypeMapping TypeName="CovidCasesDBModel.Confirmed_Recoveries">
               <MappingFragment StoreEntitySet="Confirmed_Recoveries">
-                <ScalarProperty Name="Recovery_Date" ColumnName="Recovery_Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
-                <ScalarProperty Name="Recover_Status" ColumnName="Recover_Status" />
+                <ScalarProperty Name="Hospital_Id" ColumnName="Hospital_Id" />
+                <ScalarProperty Name="Male_Confirmed_Recoveries" ColumnName="Male_Confirmed_Recoveries" />
+                <ScalarProperty Name="Female_Confirmed_Recoveries" ColumnName="Female_Confirmed_Recoveries" />
+                <ScalarProperty Name="Children_Confirmed_Recoveries" ColumnName="Children_Confirmed_Recoveries" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Hospitalized_Details">
-            <EntityTypeMapping TypeName="CovidCasesDBModel.Hospitalized_Details">
-              <MappingFragment StoreEntitySet="Hospitalized_Details">
+          <EntitySetMapping Name="Hospital_Details">
+            <EntityTypeMapping TypeName="CovidCasesDBModel.Hospital_Details">
+              <MappingFragment StoreEntitySet="Hospital_Details">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Patient_Id" ColumnName="Patient_Id" />
-                <ScalarProperty Name="Ward_Name" ColumnName="Ward_Name" />
-                <ScalarProperty Name="Ward_Number" ColumnName="Ward_Number" />
-                <ScalarProperty Name="Bed_Id" ColumnName="Bed_Id" />
+                <ScalarProperty Name="Hospital_Name" ColumnName="Hospital_Name" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -395,28 +341,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Patient_Details">
-            <EntityTypeMapping TypeName="CovidCasesDBModel.Patient_Details">
-              <MappingFragment StoreEntitySet="Patient_Details">
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="Discharge_Date" ColumnName="Discharge_Date" />
-                <ScalarProperty Name="Joining_Date" ColumnName="Joining_Date" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Age" ColumnName="Age" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Test_Id" ColumnName="Test_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tested_Individuals">
             <EntityTypeMapping TypeName="CovidCasesDBModel.Tested_Individuals">
               <MappingFragment StoreEntitySet="Tested_Individuals">
+                <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Patient_Name" ColumnName="Patient_Name" />
-                <ScalarProperty Name="Sample_Taken" ColumnName="Sample_Taken" />
-                <ScalarProperty Name="Test_Status" ColumnName="Test_Status" />
-                <ScalarProperty Name="Test_Results" ColumnName="Test_Results" />
+                <ScalarProperty Name="Hospital_Id" ColumnName="Hospital_Id" />
+                <ScalarProperty Name="Male_Sample_Taken" ColumnName="Male_Sample_Taken" />
+                <ScalarProperty Name="Female_Sample_Taken" ColumnName="Female_Sample_Taken" />
+                <ScalarProperty Name="Children_Sample_Taken" ColumnName="Children_Sample_Taken" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

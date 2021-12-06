@@ -12,25 +12,20 @@ namespace CovidCaseManagement
     using System;
     using System.Collections.Generic;
     
-    public partial class Patient_Details
+    public partial class Hospital_Details
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Patient_Details()
+        public Hospital_Details()
         {
             this.Confirmed_Cases = new HashSet<Confirmed_Cases>();
             this.Confirmed_Deaths = new HashSet<Confirmed_Deaths>();
             this.Confirmed_Recoveries = new HashSet<Confirmed_Recoveries>();
-            this.Hospitalized_Details = new HashSet<Hospitalized_Details>();
+            this.Tested_Individuals = new HashSet<Tested_Individuals>();
         }
     
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Age { get; set; }
-        public string Address { get; set; }
-        public int Test_Id { get; set; }
-        public System.DateTime Joining_Date { get; set; }
-        public Nullable<System.DateTime> Discharge_Date { get; set; }
-        public string Gender { get; set; }
+        public string Hospital_Name { get; set; }
+        public string Location { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Confirmed_Cases> Confirmed_Cases { get; set; }
@@ -39,7 +34,6 @@ namespace CovidCaseManagement
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Confirmed_Recoveries> Confirmed_Recoveries { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Hospitalized_Details> Hospitalized_Details { get; set; }
-        public virtual Tested_Individuals Tested_Individuals { get; set; }
+        public virtual ICollection<Tested_Individuals> Tested_Individuals { get; set; }
     }
 }

@@ -14,19 +14,13 @@ namespace CovidCaseManagement
     
     public partial class Tested_Individuals
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Tested_Individuals()
-        {
-            this.Patient_Details = new HashSet<Patient_Details>();
-        }
-    
         public int Id { get; set; }
-        public string Patient_Name { get; set; }
-        public string Sample_Taken { get; set; }
-        public string Test_Status { get; set; }
-        public string Test_Results { get; set; }
+        public int Hospital_Id { get; set; }
+        public int Male_Sample_Taken { get; set; }
+        public int Female_Sample_Taken { get; set; }
+        public int Children_Sample_Taken { get; set; }
+        public System.DateTime Date { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Patient_Details> Patient_Details { get; set; }
+        public virtual Hospital_Details Hospital_Details { get; set; }
     }
 }

@@ -15,10 +15,12 @@ namespace CovidCaseManagement
     public partial class Confirmed_Recoveries
     {
         public int Id { get; set; }
-        public int Patient_Id { get; set; }
-        public string Recover_Status { get; set; }
-        public Nullable<System.DateTime> Recovery_Date { get; set; }
+        public int Hospital_Id { get; set; }
+        public int Male_Confirmed_Recoveries { get; set; }
+        public int Female_Confirmed_Recoveries { get; set; }
+        public int Children_Confirmed_Recoveries { get; set; }
+        public System.DateTime Date { get; set; }
     
-        public virtual Patient_Details Patient_Details { get; set; }
+        public virtual Hospital_Details Hospital_Details { get; set; }
     }
 }

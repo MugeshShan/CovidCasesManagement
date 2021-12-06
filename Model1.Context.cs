@@ -28,9 +28,8 @@ namespace CovidCaseManagement
         public virtual DbSet<Confirmed_Cases> Confirmed_Cases { get; set; }
         public virtual DbSet<Confirmed_Deaths> Confirmed_Deaths { get; set; }
         public virtual DbSet<Confirmed_Recoveries> Confirmed_Recoveries { get; set; }
-        public virtual DbSet<Hospitalized_Details> Hospitalized_Details { get; set; }
+        public virtual DbSet<Hospital_Details> Hospital_Details { get; set; }
         public virtual DbSet<Login> Logins { get; set; }
-        public virtual DbSet<Patient_Details> Patient_Details { get; set; }
         public virtual DbSet<Tested_Individuals> Tested_Individuals { get; set; }
     }
 }

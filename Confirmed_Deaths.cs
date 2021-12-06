@@ -15,11 +15,12 @@ namespace CovidCaseManagement
     public partial class Confirmed_Deaths
     {
         public int Id { get; set; }
-        public int Patient_Id { get; set; }
-        public string DeathFactor { get; set; }
+        public int Hospital_Id { get; set; }
+        public int Male_Deaths { get; set; }
+        public int Female_Deaths { get; set; }
+        public int Children_Deaths { get; set; }
         public System.DateTime Date { get; set; }
-        public byte[] Time { get; set; }
     
-        public virtual Patient_Details Patient_Details { get; set; }
+        public virtual Hospital_Details Hospital_Details { get; set; }
     }
 }
