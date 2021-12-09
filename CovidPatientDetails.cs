@@ -24,6 +24,7 @@ namespace CovidCaseManagement
                 CovidCasesDBEntities db = new CovidCasesDBEntities();
                 var hospital = db.Hospital_Details.Where(x => x.Hospital_Name.ToLower() == textBox1.Text.ToLower()).FirstOrDefault();
                 var date = dateTimePicker1.Value.ToString("MM/dd/yyyy");
+                DataGridView dg = new DataGridView();
                 if (comboBox2.Text == "Recovery Count")
                 {
                     var hosptialrecoveries = db.Confirmed_Recoveries.Where(x =>x.Hospital_Id == hospital.Id).ToList();
@@ -45,7 +46,10 @@ namespace CovidCaseManagement
                             recoveries.Add(recoveryCount);
                         }
                     }
-                    dataGridView1.DataSource = recoveries;
+                    
+                    dg.DataSource = recoveries;
+                    var sp = new ShowPage(dg, "Recovery Count");
+                    sp.Show();
                 }
                 if (comboBox2.Text == "Confirmed Count")
                 {
@@ -68,7 +72,9 @@ namespace CovidCaseManagement
                             confirmedCases.Add(confirmedCount);
                         }
                     }
-                    dataGridView1.DataSource = confirmedCases;
+                    dg.DataSource = confirmedCases;
+                    var sp = new ShowPage(dg, "Confirmed Count");
+                    sp.Show();
                 }
 
                 if (comboBox2.Text == "Death Count")
@@ -92,7 +98,9 @@ namespace CovidCaseManagement
                             deathCases.Add(deathCount);
                         }
                     }
-                    dataGridView1.DataSource = deathCases;
+                    dg.DataSource = deathCases;
+                    var sp = new ShowPage(dg, "Death Count");
+                    sp.Show();
                 }
 
                 if (comboBox2.Text == "Testing Count")
@@ -116,8 +124,12 @@ namespace CovidCaseManagement
                             hospitalTestedCases.Add(testedCount);
                         }
                     }
-                    dataGridView1.DataSource = hospitalTestedCases;
+                    dg.DataSource = hospitalTestedCases;
+                    var sp = new ShowPage(dg, "Testing Count");
+                    sp.Show();
                 }
+                
+                
             }
             else
             {

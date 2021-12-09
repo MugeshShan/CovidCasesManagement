@@ -16,7 +16,7 @@ namespace CovidCaseManagement
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CovidPatientDetails());
+            Application.Run(new Form1());
         }
     }
 }

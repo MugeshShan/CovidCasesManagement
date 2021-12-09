@@ -28,6 +28,8 @@ namespace CovidCaseManagement
                     if (user.Password.Equals(pswdtxt.Text))
                     {
                         MessageBox.Show("Admin login successfull !!");
+                        CovidPatientDetails covidPatientDetails = new CovidPatientDetails();
+                        covidPatientDetails.ShowDialog();
                     }
                     else
                     {
